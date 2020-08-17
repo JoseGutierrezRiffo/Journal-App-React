@@ -1,12 +1,13 @@
-import React, { Fragment } from "react";
-import "./styles/styles.scss";
+import React from "react";
+import { Provider } from "react-redux";
+import { store } from "./redux/store/store";
 import AppRouter from "./routers/AppRouter";
 
 const JournalApp = () => {
   return (
-    <Fragment>
+    <Provider store={store}>
       <AppRouter />
-    </Fragment>
+    </Provider>
   );
 };
 

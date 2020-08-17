@@ -1,28 +1,58 @@
 import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
+import { useForm } from "../../hooks/useForm";
+import {useDispatch, useSelector} from "react-redux";
+import {
+  startGoogleAuthLogin,
+  startLoginWithEmailAndPassword
+} from "../../redux/actions/authAction";
 
 const LoginScreen = () => {
+  const dispatch = useDispatch();
+  const { loading } = useSelector(state => state.ui);
+
+  const [formValues, handleInputChange] = useForm({
+    email: "test@gmail.com",
+    password: "123123"
+  });
+  const { email, password } = formValues;
+
+  const handleLogin = e => {
+    e.preventDefault();
+    dispatch(startLoginWithEmailAndPassword(email, password));
+  };
+
+  const handleGoogleLogin = () => {
+    dispatch(startGoogleAuthLogin());
+  };
+
   return (
     <Fragment>
       <h3 className="auth__title">Login</h3>
-      <form>
+      <form onSubmit={handleLogin}>
         <input
           type="email"
           name="email"
           placeholder="Email"
           className="auth__input"
+          value={email}
+          onChange={handleInputChange}
         />
         <input
           type="password"
           name="password"
           placeholder="Password"
           className="auth__input"
+          value={password}
+          onChange={handleInputChange}
         />
-        <button type="submit" className="btn btn-primary btn-block">Login</button>
+        <button type="submit" className="btn btn-primary btn-block" disabled={loading}>
+          Login
+        </button>
 
         <div className="auth__social-networks">
           <p>Login with social networks</p>
-          <div className="google-btn">
+          <div className="google-btn" onClick={handleGoogleLogin}>
             <div className="google-icon-wrapper">
               <img
                 className="google-icon"
@@ -36,7 +66,9 @@ const LoginScreen = () => {
           </div>
         </div>
 
-        <Link to={"/auth/register"} className="link">Create new account</Link>
+        <Link to={"/auth/register"} className="link">
+          Create new account
+        </Link>
       </form>
     </Fragment>
   );

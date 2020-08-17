@@ -1,14 +1,16 @@
 import React, { Fragment } from "react";
 import JournalEntry from "./JournalEntry";
+import {useSelector} from "react-redux";
 
 const JournalEntries = () => {
-  const entries = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const {notes} = useSelector(state => state.notes)
+
 
   return (
     <Fragment>
       <div className="journal__entries">
-        {entries.map(item => (
-          <JournalEntry key={item} />
+        {notes.map(item => (
+          <JournalEntry key={item.id} {...item} />
         ))}
       </div>
     </Fragment>
